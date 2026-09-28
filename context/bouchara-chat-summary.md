@@ -132,3 +132,22 @@ The document adds PESTEL, SWOT, a competitor gap table (IKEA Kreativ, Heytens, M
 - Put a size on the B2B trade-account revenue.
 - Validate the journey with real customer interviews or a pilot in 1–2 stores. Everything from stage 3 onwards is assumption.
 - Line up the growth plan, pricing and blueprint with the new Bouchara Maison concept.
+
+## 8. Progress in this session (Google Doc "Bouchara Final")
+- **Section 3 (Business Model) rewritten.** It now opens with the story of the same customer and states the investment case up front: existing customers, the existing range, and unchanged prices. The subsections are:
+  - 3.1 Problems we are solving
+  - 3.2 Who we serve first (Table 1)
+  - 3.3 Objectives by customer group (Table 2)
+  - 3.4 Market sizing (Table 3)
+  - 3.5 The offer in five levels: Magnet, Starter, Core, Premium, Later option (Table 4)
+  - 3.6 Pricing: one price in every channel, the service is free, custom options priced separately, discounts only on BazarChic clearance lines
+  - 3.7 Contribution formula
+  - 3.8 Assumptions and risks (Table 5)
+- **Section 4 (Value Model) rewritten** following the four steps of SKEMA Session 4 ("DBM Session 4 The Value Model.pdf" in Drive):
+  - 4.1 Customer journey map across Awareness, Discovery, Selection, Onboarding, Satisfaction and Advocacy, with the service gaps and a measure for each stage (Table 6)
+  - 4.2 Four services: Plan my room, Help me decide, Get it right, Stay with me. Table 7 shows capabilities Bouchara has and those to add or source. Also covers the six experience measures (Findable, Accessible, Desirable, Credible, Usable, Useful)
+  - 4.3 Value ecosystem, split into upstream and downstream players (Table 8)
+  - 4.4 Target service value model and the four things needed before the pilot
+- The appendix population table is now **Table 9**.
+- **Next:** Section 5 (Operating Model). The capabilities marked "to add or source" in Table 7 are the capability gaps it should assess.
+- **Course material in Drive:** DBM Session 3 (Business Model) and Session 4 (Value Model) PDFs, and the full Strategy Journey book PDF. The book's Alexa example is on pp. 277–281.
