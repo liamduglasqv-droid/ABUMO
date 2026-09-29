@@ -151,3 +151,14 @@ The document adds PESTEL, SWOT, a competitor gap table (IKEA Kreativ, Heytens, M
 - The appendix population table is now **Table 9**.
 - **Next:** Section 5 (Operating Model). The capabilities marked "to add or source" in Table 7 are the capability gaps it should assess.
 - **Course material in Drive:** DBM Session 3 (Business Model) and Session 4 (Value Model) PDFs, and the full Strategy Journey book PDF. The book's Alexa example is on pp. 277–281.
+
+## 9. Update (29 Sep): Section 4 redone after the user's restore
+- The user restored the doc to my Section 3 version (storytelling for investors). They said the more cautious rewrite of Section 3 was unwanted.
+- Section 4 (Value Model) was rewritten in the same investor storytelling style, with evidence for each claim:
+  - 4.1 Customer journey map with an "Evidence behind it" column (Table 6)
+  - 4.2 Four services (value streams), each linked to the offer levels in Section 3.5 (Table 7), plus the six experience measures
+  - 4.3 Twelve capabilities: 4 Have, 2 Build, 6 Partner (Table 8)
+  - 4.4 Value ecosystem, showing what each player gives and gets (Table 9)
+  - 4.5 Target service value model and the four capabilities to have ready before the pilot
+- Appendix population table renumbered to **Table 10**. Reference [13] added: HBR 2017 omnichannel study (Sopadjieva, Dholakia and Benjamin).
+- **To check:** the 93% (buy through both online and physical channels) and 63% (buy through flash-sale sites) figures are cited as [9]. They come from the Showroomprivé × NellyRodi 2024 study, so confirm that [9] is that study.
