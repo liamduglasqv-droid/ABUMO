@@ -162,3 +162,21 @@ The document adds PESTEL, SWOT, a competitor gap table (IKEA Kreativ, Heytens, M
   - 4.5 Target service value model and the four capabilities to have ready before the pilot
 - Appendix population table renumbered to **Table 10**. Reference [13] added: HBR 2017 omnichannel study (Sopadjieva, Dholakia and Benjamin).
 - **To check:** the 93% (buy through both online and physical channels) and 63% (buy through flash-sale sites) figures are cited as [9]. They come from the Showroomprivé × NellyRodi 2024 study, so confirm that [9] is that study.
+
+## 10. Section 5 (Operating Model) written, 29 Sep
+Based on SKEMA Session 5: the canvas for the target operating model, the choice of organisational structure, and capability and transformation gaps. The Session 6 checkpoints (start, progress, stop) are used for governance.
+- **Intro:** one main process of 7 steps, 7 supporting processes, and 14 KPIs rolled up to the three success tests in Section 3.7 (adoption, growth, viability).
+- **5.1 Canvas fields:**
+  - trigger, pre-conditions, outcome, post-conditions
+  - location factors: EU Directive 2011/83/EU, Art. 16, which excludes custom goods from the 14-day withdrawal right (added as ref [14])
+  - networks
+  - Table 11 maps the 7 steps: Start, Suggest, Preview, Advise, Order, Fulfil, Follow up
+- **5.2 Supporting processes:** Table 12.
+- **5.3 Organisation:** a light matrix. The functional organisation stays, and a pilot lead owns the budget and KPIs. The only new roles are the pilot lead and a data analyst. RACI in Table 13, with the AA Investments sponsor accountable for checkpoint decisions.
+- **5.4 KPIs:** a KPI tree built from the 3.7 formula. Table 14 gives 14 KPIs with metric, target, rhythm and owner, aligned to the 2.3 targets and the 3.7 target of about 10% within 6 months.
+- **5.5 Governance rhythm:**
+  - weekly store meeting and weekly dashboard
+  - monthly pilot review
+  - checkpoint at month 3 (progress or fix) and at month 6 (start, progress or stop)
+- **5.6 Capability gaps:** Table 15 rates each capability on the 1–5 maturity scale, today (estimated) versus the pilot target, with the change needed in process, data, people or systems.
+- **Appendix population table:** now Table 16.
