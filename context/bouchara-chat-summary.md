@@ -187,3 +187,4 @@ Based on SKEMA Session 5: the canvas for the target operating model, the choice 
 - New references [15] Deloitte/Google 2020, [16] Nielsen NN/g, [17] Gruen & Corsten 2008, [18] DispatchTrack 2022 (vendor survey, labelled).
 - BPMN source and PNGs: deliverables/bpmn/ (bouchara_main_process.bpmn opens in bpmn.io / Camunda Modeler; generate_bpmn.py + render.js rebuild it).
 - Open fixes flagged to the user: Section 7 budget undercosts people (€8k/month vs ~€14.5k), break-even should be in extra orders, 4.7 says ~12 months vs 6-month review, 7.4 cites Section 2.3 (now 3.3), heading levels in Sections 7–8.
+- 30 Sep (later): Figure 1 replaced by one horizontal BPMN on its own landscape page (section break before and after, 0.5 in margins). Two bands joined by link events A and C; image deliverables/bpmn/bpmn_landscape.png (5322×3942 px); editable model deliverables/bpmn/bouchara_main_process.bpmn is now the horizontal version.
