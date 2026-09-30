@@ -201,7 +201,7 @@ Based on SKEMA Session 5: the canvas for the target operating model, the choice 
 User feedback: meta-commentary was overused; the investor won't read 40 pages; cut launch-date minutiae and anything that doesn't support a pillar of the logic; keep persona, market size, service value and partners but brief; state assumptions where they matter.
 
 What changed in the Google Doc (text only; tables, figures, captions, section breaks untouched):
-- Prose cut from ~48,400 to ~22,800 characters; the PDF went from ~45+ to 37 pages (most remaining length is tables/figures).
+- Prose cut from ~48,400 to ~22,800 characters; the PDF export is now 37 pages, most of it tables and figures.
 - Meta-commentary notes reduced to 7 across the whole document, one per key decision: problem validity (2.3), market-size robustness (4.4), rent vs own tech (5.3), 98% availability (6.1), flat organisation (6.3), three stores + control group (7.1), why the budget is this low (7.5). The main text reads on its own without them.
 - Executive summary rewritten to 4 paragraphs: situation, idea + moat, ask (€143k, 3 gates, pass criteria), and an explicit "most figures are estimates" caveat.
 - Removed: dates (kick-off/checkpoint dates), per-task duration reasoning, five "Why…?" blocks in 6.1, the canvas bullet list, 3.2 principles, the 6.5 bullet list, duplicated recommendations.
