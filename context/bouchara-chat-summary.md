@@ -209,3 +209,12 @@ What changed in the Google Doc (text only; tables, figures, captions, section br
 - Partner-review challenges were built into the text: fallback to two stores (never without control), staged funding with max ~€77k at risk before launch, rent-vs-build, flat vs functional/matrix.
 
 Source text for the rewrite: scratchpad rw/newtext.py (segment map by index at revision ANLCKQku…AoU).
+
+## 14. Investor voice (30 Sep 2026)
+
+User asked for the text to speak respectfully and directly to the investor reading it, with each section opening on the investor's question and closing with a one-sentence takeaway.
+- Each main section (2-8) now opens with the reader's question (e.g. "How does this make money, and from whom?", "What are you funding, when do you get an answer, and what does it cost?") and closes with an "In short: ..." sentence stating what the section delivers.
+- "You" is used at decision points only: what you fund, your maximum exposure (~€77k before launch), your go/no-go, the monthly review open to you, the squad lead as your single point of contact. "We" = the team, "Bouchara" = the company.
+- Exec summary ends with a reading guide mapping sections to investor questions.
+- Removed a dangling "(Table 18)" reference in 7.3: no Table 18 exists in the doc (numbering also skips Table 10).
+- Tables, figures, captions and section breaks untouched. Source text: scratchpad rw/newtext2.py.
