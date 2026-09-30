@@ -188,3 +188,10 @@ Based on SKEMA Session 5: the canvas for the target operating model, the choice 
 - BPMN source and PNGs: deliverables/bpmn/ (bouchara_main_process.bpmn opens in bpmn.io / Camunda Modeler; generate_bpmn.py + render.js rebuild it).
 - Open fixes flagged to the user: Section 7 budget undercosts people (€8k/month vs ~€14.5k), break-even should be in extra orders, 4.7 says ~12 months vs 6-month review, 7.4 cites Section 2.3 (now 3.3), heading levels in Sections 7–8.
 - 30 Sep (later): Figure 1 replaced by one horizontal BPMN on its own landscape page (section break before and after, 0.5 in margins). Two bands joined by link events A and C; image deliverables/bpmn/bpmn_landscape.png (5322×3942 px); editable model deliverables/bpmn/bouchara_main_process.bpmn is now the horizontal version.
+
+## 12. Section 7 (Transformation Model) rebuilt, 30 Sep
+- Style: storytelling pitch in plain text, each followed by an indented grey italic meta-commentary ("Why ...? Because ...", with sources).
+- 7.1 Pilot: Nantes, Tours, Vannes (control: Rennes, Orléans, Lorient); kick-off 2 Nov 2026, soft launch 29 Mar 2027, public launch 12 Apr, checkpoint 1 28 Jun, go/no-go 27 Sep 2027; app + web configured on a partner platform in one week; flat squad of six from own teams. Table 16 partner commitments (SLAs tied to KPIs).
+- 7.2 WBS (Table 17, 7 work packages, 27 tasks); 7.3 dependencies and estimates (Table 18; critical path = product data; partners 1-4 weeks slack); 7.4 Gantt (Figure 2, landscape page); 7.5 budget €143,000 cash (Table 19; gates €5k / €72k / €66k; squad time ~€170k not cash; break-even ~104 extra orders a month); 7.6 product backlog MoSCoW (Table 20); 7.7 checkpoints and first rollout wave.
+- 6.3 now a flat squad; appendix population table renamed Table 21; 9.2 rewritten as bottom-up assumptions; exec summary budget/dates updated; 4.7 "~6 months"; refs [19]-[25] added.
+- Source files: deliverables/plan/ (plan.py schedule, gantt.py, section7_content.py).
