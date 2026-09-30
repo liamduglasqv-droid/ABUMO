@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Defs_BoucharaMaison" targetNamespace="http://bouchara-maison/bpmn" exporter="python" exporterVersion="1">
+<bpmn:collaboration id="Collab">
+<bpmn:participant id="P_customer" name="Customer" processRef="Process_Customer" />
+<bpmn:participant id="P_bouchara" name="Bouchara Maison" processRef="Process_Bouchara" />
+<bpmn:participant id="P_bazar" name="BazarChic (campaigns)" />
+<bpmn:participant id="P_ai" name="AI visualisation provider" />
+<bpmn:participant id="P_pay" name="Payment provider" />
+<bpmn:participant id="P_supp" name="Product suppliers" />
+<bpmn:participant id="P_manu" name="Custom manufacturers" />
+<bpmn:participant id="P_deliv" name="Delivery partner" />
+<bpmn:participant id="P_inst" name="Installation partner" />
+<bpmn:messageFlow id="m_P_bazar_c_start" sourceRef="P_bazar" targetRef="c_start" />
+<bpmn:messageFlow id="m_c_visit_b_start" sourceRef="c_visit" targetRef="b_start" />
+<bpmn:messageFlow id="m_c_project_b_save" sourceRef="c_project" targetRef="b_save" />
+<bpmn:messageFlow id="m_b_render_P_ai" sourceRef="b_render" targetRef="P_ai" />
+<bpmn:messageFlow id="m_P_ai_b_render" sourceRef="P_ai" targetRef="b_render" />
+<bpmn:messageFlow id="m_b_render_c_compare" sourceRef="b_render" targetRef="c_compare" />
+<bpmn:messageFlow id="m_c_store_a_open" sourceRef="c_store" targetRef="a_open" />
+<bpmn:messageFlow id="m_c_confirm_b_basket" sourceRef="c_confirm" targetRef="b_basket" />
+<bpmn:messageFlow id="m_b_checkout_c_pay" sourceRef="b_checkout" targetRef="c_pay" />
+<bpmn:messageFlow id="m_c_pay_b_checkout" sourceRef="c_pay" targetRef="b_checkout" />
+<bpmn:messageFlow id="m_b_checkout_P_pay" sourceRef="b_checkout" targetRef="P_pay" />
+<bpmn:messageFlow id="m_P_pay_b_checkout" sourceRef="P_pay" targetRef="b_checkout" />
+<bpmn:messageFlow id="m_s_stock_P_supp" sourceRef="s_stock" targetRef="P_supp" />
+<bpmn:messageFlow id="m_s_custom_P_manu" sourceRef="s_custom" targetRef="P_manu" />
+<bpmn:messageFlow id="m_P_manu_s_custom" sourceRef="P_manu" targetRef="s_custom" />
+<bpmn:messageFlow id="m_s_book_P_deliv" sourceRef="s_book" targetRef="P_deliv" />
+<bpmn:messageFlow id="m_P_deliv_s_book" sourceRef="P_deliv" targetRef="s_book" />
+<bpmn:messageFlow id="m_s_install_P_inst" sourceRef="s_install" targetRef="P_inst" />
+<bpmn:messageFlow id="m_s_track_c_receive" sourceRef="s_track" targetRef="c_receive" />
+<bpmn:messageFlow id="m_cs_survey_c_survey" sourceRef="cs_survey" targetRef="c_survey" />
+<bpmn:messageFlow id="m_c_survey_cs_survey" sourceRef="c_survey" targetRef="cs_survey" />
+</bpmn:collaboration>
+<bpmn:process id="Process_Customer" isExecutable="false">
+<bpmn:startEvent id="c_start" name="Room to refresh"><bpmn:outgoing>f_c_start_c_visit</bpmn:outgoing><bpmn:messageEventDefinition id="med_c_start" /></bpmn:startEvent>
+<bpmn:task id="c_visit" name="Visit website or store"><bpmn:incoming>f_c_start_c_visit</bpmn:incoming><bpmn:outgoing>f_c_visit_c_g0</bpmn:outgoing></bpmn:task>
+<bpmn:exclusiveGateway id="c_g0" name="Use AI room planner?"><bpmn:incoming>f_c_visit_c_g0</bpmn:incoming><bpmn:outgoing>f_c_g0_c_project</bpmn:outgoing><bpmn:outgoing>f_c_g0_c_confirm</bpmn:outgoing></bpmn:exclusiveGateway>
+<bpmn:task id="c_project" name="Create room project (room, budget)"><bpmn:incoming>f_c_g0_c_project</bpmn:incoming><bpmn:outgoing>f_c_project_c_compare</bpmn:outgoing></bpmn:task>
+<bpmn:task id="c_compare" name="Compare previews, swap items, order samples"><bpmn:incoming>f_c_project_c_compare</bpmn:incoming><bpmn:outgoing>f_c_compare_c_g1</bpmn:outgoing></bpmn:task>
+<bpmn:exclusiveGateway id="c_g1" name="Advice or custom item?"><bpmn:incoming>f_c_compare_c_g1</bpmn:incoming><bpmn:outgoing>f_c_g1_c_store</bpmn:outgoing><bpmn:outgoing>f_c_g1_c_confirm</bpmn:outgoing></bpmn:exclusiveGateway>
+<bpmn:task id="c_store" name="Visit store with saved project"><bpmn:incoming>f_c_g1_c_store</bpmn:incoming><bpmn:outgoing>f_c_store_c_confirm</bpmn:outgoing></bpmn:task>
+<bpmn:task id="c_confirm" name="Confirm basket (online or in store)"><bpmn:incoming>f_c_g0_c_confirm</bpmn:incoming><bpmn:incoming>f_c_g1_c_confirm</bpmn:incoming><bpmn:incoming>f_c_store_c_confirm</bpmn:incoming><bpmn:outgoing>f_c_confirm_c_pay</bpmn:outgoing></bpmn:task>
+<bpmn:task id="c_pay" name="Review summary, choose options, pay"><bpmn:incoming>f_c_confirm_c_pay</bpmn:incoming><bpmn:outgoing>f_c_pay_c_receive</bpmn:outgoing></bpmn:task>
+<bpmn:task id="c_receive" name="Receive delivery and installation"><bpmn:incoming>f_c_pay_c_receive</bpmn:incoming><bpmn:outgoing>f_c_receive_c_survey</bpmn:outgoing></bpmn:task>
+<bpmn:task id="c_survey" name="Answer survey or report issue"><bpmn:incoming>f_c_receive_c_survey</bpmn:incoming><bpmn:outgoing>f_c_survey_c_end</bpmn:outgoing></bpmn:task>
+<bpmn:endEvent id="c_end" name="Room done"><bpmn:incoming>f_c_survey_c_end</bpmn:incoming></bpmn:endEvent>
+<bpmn:sequenceFlow id="f_c_start_c_visit" sourceRef="c_start" targetRef="c_visit" />
+<bpmn:sequenceFlow id="f_c_visit_c_g0" sourceRef="c_visit" targetRef="c_g0" />
+<bpmn:sequenceFlow id="f_c_g0_c_project" name="Yes" sourceRef="c_g0" targetRef="c_project" />
+<bpmn:sequenceFlow id="f_c_g0_c_confirm" name="No" sourceRef="c_g0" targetRef="c_confirm" />
+<bpmn:sequenceFlow id="f_c_project_c_compare" sourceRef="c_project" targetRef="c_compare" />
+<bpmn:sequenceFlow id="f_c_compare_c_g1" sourceRef="c_compare" targetRef="c_g1" />
+<bpmn:sequenceFlow id="f_c_g1_c_store" name="Yes" sourceRef="c_g1" targetRef="c_store" />
+<bpmn:sequenceFlow id="f_c_g1_c_confirm" name="No" sourceRef="c_g1" targetRef="c_confirm" />
+<bpmn:sequenceFlow id="f_c_store_c_confirm" sourceRef="c_store" targetRef="c_confirm" />
+<bpmn:sequenceFlow id="f_c_confirm_c_pay" sourceRef="c_confirm" targetRef="c_pay" />
+<bpmn:sequenceFlow id="f_c_pay_c_receive" sourceRef="c_pay" targetRef="c_receive" />
+<bpmn:sequenceFlow id="f_c_receive_c_survey" sourceRef="c_receive" targetRef="c_survey" />
+<bpmn:sequenceFlow id="f_c_survey_c_end" sourceRef="c_survey" targetRef="c_end" />
+</bpmn:process>
+<bpmn:process id="Process_Bouchara" isExecutable="false">
+<bpmn:laneSet id="LS">
+<bpmn:lane id="Lane_PLAT" name="Digital platform">
+<bpmn:flowNodeRef>b_start</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>b_gp</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>b_save</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>b_suggest</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>b_render</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>b_fallback</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>b_xa</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>b_ga</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>b_xm</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>b_basket</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>b_stock</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>b_g2</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>b_subst</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>b_checkout</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>b_g3</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>b_order</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>t_render</bpmn:flowNodeRef>
+</bpmn:lane>
+<bpmn:lane id="Lane_ADV" name="Store advisers">
+<bpmn:flowNodeRef>a_open</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>a_advise</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>a_g4</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>a_validate</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>a_confirm</bpmn:flowNodeRef>
+</bpmn:lane>
+<bpmn:lane id="Lane_SC" name="Supply chain">
+<bpmn:flowNodeRef>s_split</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>s_stock</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>s_custom</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>s_join</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>s_book</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>s_g5</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>s_install</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>s_track</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>s_replan</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>t_late</bpmn:flowNodeRef>
+</bpmn:lane>
+<bpmn:lane id="Lane_CS" name="Customer service">
+<bpmn:flowNodeRef>cs_survey</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>cs_g6</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>cs_after</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>cs_invite</bpmn:flowNodeRef>
+<bpmn:flowNodeRef>cs_end</bpmn:flowNodeRef>
+</bpmn:lane>
+</bpmn:laneSet>
+<bpmn:startEvent id="b_start" name="Session starts"><bpmn:outgoing>f_b_start_b_gp</bpmn:outgoing><bpmn:messageEventDefinition id="med_b_start" /></bpmn:startEvent>
+<bpmn:exclusiveGateway id="b_gp" name="Project created?"><bpmn:incoming>f_b_start_b_gp</bpmn:incoming><bpmn:outgoing>f_b_gp_b_save</bpmn:outgoing><bpmn:outgoing>f_b_gp_b_xa</bpmn:outgoing></bpmn:exclusiveGateway>
+<bpmn:task id="b_save" name="Save project and project ID"><bpmn:incoming>f_b_gp_b_save</bpmn:incoming><bpmn:outgoing>f_b_save_b_suggest</bpmn:outgoing></bpmn:task>
+<bpmn:task id="b_suggest" name="Suggest coordinated room within budget"><bpmn:incoming>f_b_save_b_suggest</bpmn:incoming><bpmn:outgoing>f_b_suggest_b_render</bpmn:outgoing></bpmn:task>
+<bpmn:task id="b_render" name="Render 3 options in parallel (fast preview first)"><bpmn:incoming>f_b_suggest_b_render</bpmn:incoming><bpmn:outgoing>f_b_render_b_xa</bpmn:outgoing></bpmn:task>
+<bpmn:task id="b_fallback" name="Fallback: product photos + advice offer"><bpmn:incoming>f_t_render_b_fallback</bpmn:incoming><bpmn:outgoing>f_b_fallback_b_xa</bpmn:outgoing></bpmn:task>
+<bpmn:exclusiveGateway id="b_xa" name=""><bpmn:incoming>f_b_gp_b_xa</bpmn:incoming><bpmn:incoming>f_b_render_b_xa</bpmn:incoming><bpmn:incoming>f_b_fallback_b_xa</bpmn:incoming><bpmn:outgoing>f_b_xa_b_ga</bpmn:outgoing></bpmn:exclusiveGateway>
+<bpmn:exclusiveGateway id="b_ga" name="Advice requested?"><bpmn:incoming>f_b_xa_b_ga</bpmn:incoming><bpmn:outgoing>f_b_ga_a_open</bpmn:outgoing><bpmn:outgoing>f_b_ga_b_xm</bpmn:outgoing></bpmn:exclusiveGateway>
+<bpmn:task id="a_open" name="Open shared project; readiness check"><bpmn:incoming>f_b_ga_a_open</bpmn:incoming><bpmn:outgoing>f_a_open_a_advise</bpmn:outgoing></bpmn:task>
+<bpmn:task id="a_advise" name="Advise on materials, sizes, samples"><bpmn:incoming>f_a_open_a_advise</bpmn:incoming><bpmn:outgoing>f_a_advise_a_g4</bpmn:outgoing></bpmn:task>
+<bpmn:exclusiveGateway id="a_g4" name="Custom item?"><bpmn:incoming>f_a_advise_a_g4</bpmn:incoming><bpmn:outgoing>f_a_g4_a_validate</bpmn:outgoing><bpmn:outgoing>f_a_g4_a_confirm</bpmn:outgoing></bpmn:exclusiveGateway>
+<bpmn:task id="a_validate" name="Validate spec with production checklist"><bpmn:incoming>f_a_g4_a_validate</bpmn:incoming><bpmn:outgoing>f_a_validate_a_confirm</bpmn:outgoing></bpmn:task>
+<bpmn:task id="a_confirm" name="Confirm selection in shared project"><bpmn:incoming>f_a_g4_a_confirm</bpmn:incoming><bpmn:incoming>f_a_validate_a_confirm</bpmn:incoming><bpmn:outgoing>f_a_confirm_b_xm</bpmn:outgoing></bpmn:task>
+<bpmn:exclusiveGateway id="b_xm" name=""><bpmn:incoming>f_b_ga_b_xm</bpmn:incoming><bpmn:incoming>f_a_confirm_b_xm</bpmn:incoming><bpmn:outgoing>f_b_xm_b_basket</bpmn:outgoing></bpmn:exclusiveGateway>
+<bpmn:intermediateCatchEvent id="b_basket" name="Basket confirmed"><bpmn:incoming>f_b_xm_b_basket</bpmn:incoming><bpmn:outgoing>f_b_basket_b_stock</bpmn:outgoing><bpmn:messageEventDefinition id="med_b_basket" /></bpmn:intermediateCatchEvent>
+<bpmn:task id="b_stock" name="Check stock and dates for whole room"><bpmn:incoming>f_b_basket_b_stock</bpmn:incoming><bpmn:outgoing>f_b_stock_b_g2</bpmn:outgoing></bpmn:task>
+<bpmn:exclusiveGateway id="b_g2" name="Room complete?"><bpmn:incoming>f_b_stock_b_g2</bpmn:incoming><bpmn:outgoing>f_b_g2_b_subst</bpmn:outgoing><bpmn:outgoing>f_b_g2_b_checkout</bpmn:outgoing></bpmn:exclusiveGateway>
+<bpmn:task id="b_subst" name="Offer substitute, split delivery or wait"><bpmn:incoming>f_b_g2_b_subst</bpmn:incoming><bpmn:outgoing>f_b_subst_b_checkout</bpmn:outgoing></bpmn:task>
+<bpmn:task id="b_checkout" name="Checkout: lead times, installation, terms"><bpmn:incoming>f_b_g2_b_checkout</bpmn:incoming><bpmn:incoming>f_b_subst_b_checkout</bpmn:incoming><bpmn:incoming>f_b_g3_b_checkout</bpmn:incoming><bpmn:outgoing>f_b_checkout_b_g3</bpmn:outgoing></bpmn:task>
+<bpmn:exclusiveGateway id="b_g3" name="Paid?"><bpmn:incoming>f_b_checkout_b_g3</bpmn:incoming><bpmn:outgoing>f_b_g3_b_order</bpmn:outgoing><bpmn:outgoing>f_b_g3_b_checkout</bpmn:outgoing></bpmn:exclusiveGateway>
+<bpmn:task id="b_order" name="Create order linked to project"><bpmn:incoming>f_b_g3_b_order</bpmn:incoming><bpmn:outgoing>f_b_order_s_split</bpmn:outgoing></bpmn:task>
+<bpmn:parallelGateway id="s_split" name=""><bpmn:incoming>f_b_order_s_split</bpmn:incoming><bpmn:outgoing>f_s_split_s_stock</bpmn:outgoing><bpmn:outgoing>f_s_split_s_custom</bpmn:outgoing></bpmn:parallelGateway>
+<bpmn:task id="s_stock" name="Pick from stock or drop-ship"><bpmn:incoming>f_s_split_s_stock</bpmn:incoming><bpmn:outgoing>f_s_stock_s_join</bpmn:outgoing></bpmn:task>
+<bpmn:task id="s_custom" name="Send validated spec; track production"><bpmn:incoming>f_s_split_s_custom</bpmn:incoming><bpmn:outgoing>f_s_custom_s_join</bpmn:outgoing></bpmn:task>
+<bpmn:parallelGateway id="s_join" name=""><bpmn:incoming>f_s_stock_s_join</bpmn:incoming><bpmn:incoming>f_s_custom_s_join</bpmn:incoming><bpmn:outgoing>f_s_join_s_book</bpmn:outgoing></bpmn:parallelGateway>
+<bpmn:task id="s_book" name="Confirm lead time; book delivery slot"><bpmn:incoming>f_s_join_s_book</bpmn:incoming><bpmn:outgoing>f_s_book_s_g5</bpmn:outgoing></bpmn:task>
+<bpmn:exclusiveGateway id="s_g5" name="Installation ordered?"><bpmn:incoming>f_s_book_s_g5</bpmn:incoming><bpmn:outgoing>f_s_g5_s_install</bpmn:outgoing><bpmn:outgoing>f_s_g5_s_track</bpmn:outgoing></bpmn:exclusiveGateway>
+<bpmn:task id="s_install" name="Book installation on delivery day"><bpmn:incoming>f_s_g5_s_install</bpmn:incoming><bpmn:outgoing>f_s_install_s_track</bpmn:outgoing></bpmn:task>
+<bpmn:task id="s_track" name="Track delivery to promised date"><bpmn:incoming>f_s_g5_s_track</bpmn:incoming><bpmn:incoming>f_s_install_s_track</bpmn:incoming><bpmn:incoming>f_s_replan_s_track</bpmn:incoming><bpmn:outgoing>f_s_track_cs_survey</bpmn:outgoing></bpmn:task>
+<bpmn:task id="s_replan" name="Warn customer and re-plan"><bpmn:incoming>f_t_late_s_replan</bpmn:incoming><bpmn:outgoing>f_s_replan_s_track</bpmn:outgoing></bpmn:task>
+<bpmn:task id="cs_survey" name="Send care guide and survey"><bpmn:incoming>f_s_track_cs_survey</bpmn:incoming><bpmn:outgoing>f_cs_survey_cs_g6</bpmn:outgoing></bpmn:task>
+<bpmn:exclusiveGateway id="cs_g6" name="Issue reported?"><bpmn:incoming>f_cs_survey_cs_g6</bpmn:incoming><bpmn:outgoing>f_cs_g6_cs_after</bpmn:outgoing><bpmn:outgoing>f_cs_g6_cs_invite</bpmn:outgoing></bpmn:exclusiveGateway>
+<bpmn:task id="cs_after" name="After-sales: replace or remake"><bpmn:incoming>f_cs_g6_cs_after</bpmn:incoming><bpmn:outgoing>f_cs_after_cs_invite</bpmn:outgoing></bpmn:task>
+<bpmn:task id="cs_invite" name="Invite to next room project"><bpmn:incoming>f_cs_g6_cs_invite</bpmn:incoming><bpmn:incoming>f_cs_after_cs_invite</bpmn:incoming><bpmn:outgoing>f_cs_invite_cs_end</bpmn:outgoing></bpmn:task>
+<bpmn:endEvent id="cs_end" name="Room delivered, project open"><bpmn:incoming>f_cs_invite_cs_end</bpmn:incoming></bpmn:endEvent>
+<bpmn:boundaryEvent id="t_render" name="&gt; 10 s" attachedToRef="b_render" cancelActivity="true"><bpmn:outgoing>f_t_render_b_fallback</bpmn:outgoing><bpmn:timerEventDefinition id="ted_t_render" /></bpmn:boundaryEvent>
+<bpmn:boundaryEvent id="t_late" name="Date at risk" attachedToRef="s_track" cancelActivity="true"><bpmn:outgoing>f_t_late_s_replan</bpmn:outgoing><bpmn:timerEventDefinition id="ted_t_late" /></bpmn:boundaryEvent>
+<bpmn:sequenceFlow id="f_b_start_b_gp" sourceRef="b_start" targetRef="b_gp" />
+<bpmn:sequenceFlow id="f_b_gp_b_save" name="Yes" sourceRef="b_gp" targetRef="b_save" />
+<bpmn:sequenceFlow id="f_b_gp_b_xa" name="No" sourceRef="b_gp" targetRef="b_xa" />
+<bpmn:sequenceFlow id="f_b_save_b_suggest" sourceRef="b_save" targetRef="b_suggest" />
+<bpmn:sequenceFlow id="f_b_suggest_b_render" sourceRef="b_suggest" targetRef="b_render" />
+<bpmn:sequenceFlow id="f_b_render_b_xa" sourceRef="b_render" targetRef="b_xa" />
+<bpmn:sequenceFlow id="f_t_render_b_fallback" sourceRef="t_render" targetRef="b_fallback" />
+<bpmn:sequenceFlow id="f_b_fallback_b_xa" sourceRef="b_fallback" targetRef="b_xa" />
+<bpmn:sequenceFlow id="f_b_xa_b_ga" sourceRef="b_xa" targetRef="b_ga" />
+<bpmn:sequenceFlow id="f_b_ga_a_open" name="Yes" sourceRef="b_ga" targetRef="a_open" />
+<bpmn:sequenceFlow id="f_b_ga_b_xm" name="No" sourceRef="b_ga" targetRef="b_xm" />
+<bpmn:sequenceFlow id="f_a_open_a_advise" sourceRef="a_open" targetRef="a_advise" />
+<bpmn:sequenceFlow id="f_a_advise_a_g4" sourceRef="a_advise" targetRef="a_g4" />
+<bpmn:sequenceFlow id="f_a_g4_a_validate" name="Yes" sourceRef="a_g4" targetRef="a_validate" />
+<bpmn:sequenceFlow id="f_a_g4_a_confirm" name="No" sourceRef="a_g4" targetRef="a_confirm" />
+<bpmn:sequenceFlow id="f_a_validate_a_confirm" sourceRef="a_validate" targetRef="a_confirm" />
+<bpmn:sequenceFlow id="f_a_confirm_b_xm" sourceRef="a_confirm" targetRef="b_xm" />
+<bpmn:sequenceFlow id="f_b_xm_b_basket" sourceRef="b_xm" targetRef="b_basket" />
+<bpmn:sequenceFlow id="f_b_basket_b_stock" sourceRef="b_basket" targetRef="b_stock" />
+<bpmn:sequenceFlow id="f_b_stock_b_g2" sourceRef="b_stock" targetRef="b_g2" />
+<bpmn:sequenceFlow id="f_b_g2_b_subst" name="No" sourceRef="b_g2" targetRef="b_subst" />
+<bpmn:sequenceFlow id="f_b_g2_b_checkout" name="Yes" sourceRef="b_g2" targetRef="b_checkout" />
+<bpmn:sequenceFlow id="f_b_subst_b_checkout" sourceRef="b_subst" targetRef="b_checkout" />
+<bpmn:sequenceFlow id="f_b_checkout_b_g3" sourceRef="b_checkout" targetRef="b_g3" />
+<bpmn:sequenceFlow id="f_b_g3_b_order" name="Yes" sourceRef="b_g3" targetRef="b_order" />
+<bpmn:sequenceFlow id="f_b_g3_b_checkout" name="No" sourceRef="b_g3" targetRef="b_checkout" />
+<bpmn:sequenceFlow id="f_b_order_s_split" sourceRef="b_order" targetRef="s_split" />
+<bpmn:sequenceFlow id="f_s_split_s_stock" sourceRef="s_split" targetRef="s_stock" />
+<bpmn:sequenceFlow id="f_s_split_s_custom" sourceRef="s_split" targetRef="s_custom" />
+<bpmn:sequenceFlow id="f_s_stock_s_join" sourceRef="s_stock" targetRef="s_join" />
+<bpmn:sequenceFlow id="f_s_custom_s_join" sourceRef="s_custom" targetRef="s_join" />
+<bpmn:sequenceFlow id="f_s_join_s_book" sourceRef="s_join" targetRef="s_book" />
+<bpmn:sequenceFlow id="f_s_book_s_g5" sourceRef="s_book" targetRef="s_g5" />
+<bpmn:sequenceFlow id="f_s_g5_s_install" name="Yes" sourceRef="s_g5" targetRef="s_install" />
+<bpmn:sequenceFlow id="f_s_g5_s_track" name="No" sourceRef="s_g5" targetRef="s_track" />
+<bpmn:sequenceFlow id="f_s_install_s_track" sourceRef="s_install" targetRef="s_track" />
+<bpmn:sequenceFlow id="f_t_late_s_replan" sourceRef="t_late" targetRef="s_replan" />
+<bpmn:sequenceFlow id="f_s_replan_s_track" sourceRef="s_replan" targetRef="s_track" />
+<bpmn:sequenceFlow id="f_s_track_cs_survey" sourceRef="s_track" targetRef="cs_survey" />
+<bpmn:sequenceFlow id="f_cs_survey_cs_g6" sourceRef="cs_survey" targetRef="cs_g6" />
+<bpmn:sequenceFlow id="f_cs_g6_cs_after" name="Yes" sourceRef="cs_g6" targetRef="cs_after" />
+<bpmn:sequenceFlow id="f_cs_g6_cs_invite" name="No" sourceRef="cs_g6" targetRef="cs_invite" />
+<bpmn:sequenceFlow id="f_cs_after_cs_invite" sourceRef="cs_after" targetRef="cs_invite" />
+<bpmn:sequenceFlow id="f_cs_invite_cs_end" sourceRef="cs_invite" targetRef="cs_end" />
+</bpmn:process>
+<bpmndi:BPMNDiagram id="Diagram"><bpmndi:BPMNPlane id="Plane" bpmnElement="Collab">
+<bpmndi:BPMNShape id="P_customer_di" bpmnElement="P_customer" isHorizontal="false"><dc:Bounds x="10" y="10" width="140" height="2954" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="P_bouchara_di" bpmnElement="P_bouchara" isHorizontal="false"><dc:Bounds x="170" y="10" width="560" height="2954" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="Lane_PLAT_di" bpmnElement="Lane_PLAT" isHorizontal="false"><dc:Bounds x="170" y="40" width="140" height="2924" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="Lane_ADV_di" bpmnElement="Lane_ADV" isHorizontal="false"><dc:Bounds x="310" y="40" width="140" height="2924" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="Lane_SC_di" bpmnElement="Lane_SC" isHorizontal="false"><dc:Bounds x="450" y="40" width="140" height="2924" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="Lane_CS_di" bpmnElement="Lane_CS" isHorizontal="false"><dc:Bounds x="590" y="40" width="140" height="2924" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="P_bazar_di" bpmnElement="P_bazar" isHorizontal="true"><dc:Bounds x="750" y="93" width="124" height="50" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="P_ai_di" bpmnElement="P_ai" isHorizontal="true"><dc:Bounds x="750" y="493" width="124" height="50" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="P_pay_di" bpmnElement="P_pay" isHorizontal="true"><dc:Bounds x="750" y="1613" width="124" height="50" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="P_supp_di" bpmnElement="P_supp" isHorizontal="true"><dc:Bounds x="750" y="1933" width="124" height="50" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="P_manu_di" bpmnElement="P_manu" isHorizontal="true"><dc:Bounds x="750" y="2013" width="124" height="50" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="P_deliv_di" bpmnElement="P_deliv" isHorizontal="true"><dc:Bounds x="750" y="2173" width="124" height="50" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="P_inst_di" bpmnElement="P_inst" isHorizontal="true"><dc:Bounds x="750" y="2333" width="124" height="50" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="c_start_di" bpmnElement="c_start"><dc:Bounds x="64" y="102" width="32" height="32" /><bpmndi:BPMNLabel><dc:Bounds x="100" y="96" width="62" height="40" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="c_visit_di" bpmnElement="c_visit"><dc:Bounds x="21" y="169" width="118" height="58" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="c_g0_di" bpmnElement="c_g0" isMarkerVisible="true"><dc:Bounds x="59" y="257" width="42" height="42" /><bpmndi:BPMNLabel><dc:Bounds x="105" y="251" width="62" height="40" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="c_project_di" bpmnElement="c_project"><dc:Bounds x="21" y="329" width="118" height="58" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="c_compare_di" bpmnElement="c_compare"><dc:Bounds x="21" y="569" width="118" height="58" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="c_g1_di" bpmnElement="c_g1" isMarkerVisible="true"><dc:Bounds x="59" y="657" width="42" height="42" /><bpmndi:BPMNLabel><dc:Bounds x="105" y="651" width="62" height="40" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="c_store_di" bpmnElement="c_store"><dc:Bounds x="21" y="809" width="118" height="58" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="c_confirm_di" bpmnElement="c_confirm"><dc:Bounds x="21" y="1289" width="118" height="58" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="c_pay_di" bpmnElement="c_pay"><dc:Bounds x="21" y="1609" width="118" height="58" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="c_receive_di" bpmnElement="c_receive"><dc:Bounds x="21" y="2409" width="118" height="58" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="c_survey_di" bpmnElement="c_survey"><dc:Bounds x="21" y="2569" width="118" height="58" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="c_end_di" bpmnElement="c_end"><dc:Bounds x="64" y="2662" width="32" height="32" /><bpmndi:BPMNLabel><dc:Bounds x="100" y="2656" width="62" height="40" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="b_start_di" bpmnElement="b_start"><dc:Bounds x="224" y="182" width="32" height="32" /><bpmndi:BPMNLabel><dc:Bounds x="260" y="176" width="62" height="40" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="b_gp_di" bpmnElement="b_gp" isMarkerVisible="true"><dc:Bounds x="219" y="257" width="42" height="42" /><bpmndi:BPMNLabel><dc:Bounds x="265" y="251" width="62" height="40" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="b_save_di" bpmnElement="b_save"><dc:Bounds x="181" y="329" width="118" height="58" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="b_suggest_di" bpmnElement="b_suggest"><dc:Bounds x="181" y="409" width="118" height="58" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="b_render_di" bpmnElement="b_render"><dc:Bounds x="181" y="489" width="118" height="58" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="b_fallback_di" bpmnElement="b_fallback"><dc:Bounds x="181" y="569" width="118" height="58" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="b_xa_di" bpmnElement="b_xa" isMarkerVisible="true"><dc:Bounds x="219" y="657" width="42" height="42" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="b_ga_di" bpmnElement="b_ga" isMarkerVisible="true"><dc:Bounds x="219" y="737" width="42" height="42" /><bpmndi:BPMNLabel><dc:Bounds x="265" y="731" width="62" height="40" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="a_open_di" bpmnElement="a_open"><dc:Bounds x="321" y="809" width="118" height="58" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="a_advise_di" bpmnElement="a_advise"><dc:Bounds x="321" y="889" width="118" height="58" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="a_g4_di" bpmnElement="a_g4" isMarkerVisible="true"><dc:Bounds x="359" y="977" width="42" height="42" /><bpmndi:BPMNLabel><dc:Bounds x="405" y="971" width="62" height="40" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="a_validate_di" bpmnElement="a_validate"><dc:Bounds x="321" y="1049" width="118" height="58" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="a_confirm_di" bpmnElement="a_confirm"><dc:Bounds x="321" y="1129" width="118" height="58" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="b_xm_di" bpmnElement="b_xm" isMarkerVisible="true"><dc:Bounds x="219" y="1217" width="42" height="42" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="b_basket_di" bpmnElement="b_basket"><dc:Bounds x="224" y="1302" width="32" height="32" /><bpmndi:BPMNLabel><dc:Bounds x="260" y="1296" width="62" height="40" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="b_stock_di" bpmnElement="b_stock"><dc:Bounds x="181" y="1369" width="118" height="58" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="b_g2_di" bpmnElement="b_g2" isMarkerVisible="true"><dc:Bounds x="219" y="1457" width="42" height="42" /><bpmndi:BPMNLabel><dc:Bounds x="265" y="1451" width="62" height="40" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="b_subst_di" bpmnElement="b_subst"><dc:Bounds x="181" y="1529" width="118" height="58" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="b_checkout_di" bpmnElement="b_checkout"><dc:Bounds x="181" y="1609" width="118" height="58" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="b_g3_di" bpmnElement="b_g3" isMarkerVisible="true"><dc:Bounds x="219" y="1697" width="42" height="42" /><bpmndi:BPMNLabel><dc:Bounds x="265" y="1691" width="62" height="40" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="b_order_di" bpmnElement="b_order"><dc:Bounds x="181" y="1769" width="118" height="58" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="s_split_di" bpmnElement="s_split"><dc:Bounds x="499" y="1857" width="42" height="42" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="s_stock_di" bpmnElement="s_stock"><dc:Bounds x="461" y="1929" width="118" height="58" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="s_custom_di" bpmnElement="s_custom"><dc:Bounds x="461" y="2009" width="118" height="58" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="s_join_di" bpmnElement="s_join"><dc:Bounds x="499" y="2097" width="42" height="42" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="s_book_di" bpmnElement="s_book"><dc:Bounds x="461" y="2169" width="118" height="58" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="s_g5_di" bpmnElement="s_g5" isMarkerVisible="true"><dc:Bounds x="499" y="2257" width="42" height="42" /><bpmndi:BPMNLabel><dc:Bounds x="545" y="2251" width="62" height="40" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="s_install_di" bpmnElement="s_install"><dc:Bounds x="461" y="2329" width="118" height="58" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="s_track_di" bpmnElement="s_track"><dc:Bounds x="461" y="2409" width="118" height="58" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="s_replan_di" bpmnElement="s_replan"><dc:Bounds x="461" y="2489" width="118" height="58" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="cs_survey_di" bpmnElement="cs_survey"><dc:Bounds x="601" y="2569" width="118" height="58" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="cs_g6_di" bpmnElement="cs_g6" isMarkerVisible="true"><dc:Bounds x="639" y="2657" width="42" height="42" /><bpmndi:BPMNLabel><dc:Bounds x="685" y="2651" width="62" height="40" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="cs_after_di" bpmnElement="cs_after"><dc:Bounds x="601" y="2729" width="118" height="58" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="cs_invite_di" bpmnElement="cs_invite"><dc:Bounds x="601" y="2809" width="118" height="58" /></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="cs_end_di" bpmnElement="cs_end"><dc:Bounds x="644" y="2902" width="32" height="32" /><bpmndi:BPMNLabel><dc:Bounds x="578" y="2898" width="62" height="40" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="t_render_di" bpmnElement="t_render"><dc:Bounds x="269" y="531" width="32" height="32" /><bpmndi:BPMNLabel><dc:Bounds x="303" y="549" width="58" height="16" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+<bpmndi:BPMNShape id="t_late_di" bpmnElement="t_late"><dc:Bounds x="549" y="2451" width="32" height="32" /><bpmndi:BPMNLabel><dc:Bounds x="583" y="2469" width="58" height="16" /></bpmndi:BPMNLabel></bpmndi:BPMNShape>
+<bpmndi:BPMNEdge id="f_c_start_c_visit_di" bpmnElement="f_c_start_c_visit"><di:waypoint x="80" y="134" /><di:waypoint x="80" y="169" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_c_visit_c_g0_di" bpmnElement="f_c_visit_c_g0"><di:waypoint x="80" y="227" /><di:waypoint x="80" y="257" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_c_g0_c_project_di" bpmnElement="f_c_g0_c_project"><di:waypoint x="80" y="299" /><di:waypoint x="80" y="329" /><bpmndi:BPMNLabel><dc:Bounds x="84" y="300" width="22" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_c_g0_c_confirm_di" bpmnElement="f_c_g0_c_confirm"><di:waypoint x="59" y="278" /><di:waypoint x="16" y="278" /><di:waypoint x="16" y="1280" /><di:waypoint x="44" y="1280" /><di:waypoint x="44" y="1289" /><bpmndi:BPMNLabel><dc:Bounds x="34" y="280" width="22" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_c_project_c_compare_di" bpmnElement="f_c_project_c_compare"><di:waypoint x="80" y="387" /><di:waypoint x="80" y="569" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_c_compare_c_g1_di" bpmnElement="f_c_compare_c_g1"><di:waypoint x="80" y="627" /><di:waypoint x="80" y="657" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_c_g1_c_store_di" bpmnElement="f_c_g1_c_store"><di:waypoint x="80" y="699" /><di:waypoint x="80" y="809" /><bpmndi:BPMNLabel><dc:Bounds x="84" y="700" width="22" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_c_g1_c_confirm_di" bpmnElement="f_c_g1_c_confirm"><di:waypoint x="101" y="678" /><di:waypoint x="144" y="678" /><di:waypoint x="144" y="1280" /><di:waypoint x="116" y="1280" /><di:waypoint x="116" y="1289" /><bpmndi:BPMNLabel><dc:Bounds x="104" y="680" width="22" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_c_store_c_confirm_di" bpmnElement="f_c_store_c_confirm"><di:waypoint x="80" y="867" /><di:waypoint x="80" y="1289" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_c_confirm_c_pay_di" bpmnElement="f_c_confirm_c_pay"><di:waypoint x="80" y="1347" /><di:waypoint x="80" y="1609" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_c_pay_c_receive_di" bpmnElement="f_c_pay_c_receive"><di:waypoint x="80" y="1667" /><di:waypoint x="80" y="2409" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_c_receive_c_survey_di" bpmnElement="f_c_receive_c_survey"><di:waypoint x="80" y="2467" /><di:waypoint x="80" y="2569" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_c_survey_c_end_di" bpmnElement="f_c_survey_c_end"><di:waypoint x="80" y="2627" /><di:waypoint x="80" y="2662" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_b_start_b_gp_di" bpmnElement="f_b_start_b_gp"><di:waypoint x="240" y="214" /><di:waypoint x="240" y="257" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_b_gp_b_save_di" bpmnElement="f_b_gp_b_save"><di:waypoint x="240" y="299" /><di:waypoint x="240" y="329" /><bpmndi:BPMNLabel><dc:Bounds x="244" y="300" width="22" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_b_gp_b_xa_di" bpmnElement="f_b_gp_b_xa"><di:waypoint x="261" y="278" /><di:waypoint x="304" y="278" /><di:waypoint x="304" y="678" /><di:waypoint x="261" y="678" /><bpmndi:BPMNLabel><dc:Bounds x="264" y="280" width="22" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_b_save_b_suggest_di" bpmnElement="f_b_save_b_suggest"><di:waypoint x="240" y="387" /><di:waypoint x="240" y="409" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_b_suggest_b_render_di" bpmnElement="f_b_suggest_b_render"><di:waypoint x="240" y="467" /><di:waypoint x="240" y="489" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_b_render_b_xa_di" bpmnElement="f_b_render_b_xa"><di:waypoint x="181" y="518" /><di:waypoint x="176" y="518" /><di:waypoint x="176" y="678" /><di:waypoint x="219" y="678" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_t_render_b_fallback_di" bpmnElement="f_t_render_b_fallback"><di:waypoint x="285" y="563" /><di:waypoint x="285" y="569" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_b_fallback_b_xa_di" bpmnElement="f_b_fallback_b_xa"><di:waypoint x="240" y="627" /><di:waypoint x="240" y="657" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_b_xa_b_ga_di" bpmnElement="f_b_xa_b_ga"><di:waypoint x="240" y="699" /><di:waypoint x="240" y="737" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_b_ga_a_open_di" bpmnElement="f_b_ga_a_open"><di:waypoint x="261" y="758" /><di:waypoint x="380" y="758" /><di:waypoint x="380" y="809" /><bpmndi:BPMNLabel><dc:Bounds x="264" y="760" width="22" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_b_ga_b_xm_di" bpmnElement="f_b_ga_b_xm"><di:waypoint x="240" y="779" /><di:waypoint x="240" y="1217" /><bpmndi:BPMNLabel><dc:Bounds x="244" y="780" width="22" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_a_open_a_advise_di" bpmnElement="f_a_open_a_advise"><di:waypoint x="380" y="867" /><di:waypoint x="380" y="889" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_a_advise_a_g4_di" bpmnElement="f_a_advise_a_g4"><di:waypoint x="380" y="947" /><di:waypoint x="380" y="977" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_a_g4_a_validate_di" bpmnElement="f_a_g4_a_validate"><di:waypoint x="380" y="1019" /><di:waypoint x="380" y="1049" /><bpmndi:BPMNLabel><dc:Bounds x="384" y="1020" width="22" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_a_g4_a_confirm_di" bpmnElement="f_a_g4_a_confirm"><di:waypoint x="401" y="998" /><di:waypoint x="444" y="998" /><di:waypoint x="444" y="1120" /><di:waypoint x="416" y="1120" /><di:waypoint x="416" y="1129" /><bpmndi:BPMNLabel><dc:Bounds x="404" y="1000" width="22" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_a_validate_a_confirm_di" bpmnElement="f_a_validate_a_confirm"><di:waypoint x="380" y="1107" /><di:waypoint x="380" y="1129" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_a_confirm_b_xm_di" bpmnElement="f_a_confirm_b_xm"><di:waypoint x="380" y="1187" /><di:waypoint x="380" y="1238" /><di:waypoint x="261" y="1238" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_b_xm_b_basket_di" bpmnElement="f_b_xm_b_basket"><di:waypoint x="240" y="1259" /><di:waypoint x="240" y="1302" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_b_basket_b_stock_di" bpmnElement="f_b_basket_b_stock"><di:waypoint x="240" y="1334" /><di:waypoint x="240" y="1369" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_b_stock_b_g2_di" bpmnElement="f_b_stock_b_g2"><di:waypoint x="240" y="1427" /><di:waypoint x="240" y="1457" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_b_g2_b_subst_di" bpmnElement="f_b_g2_b_subst"><di:waypoint x="240" y="1499" /><di:waypoint x="240" y="1529" /><bpmndi:BPMNLabel><dc:Bounds x="244" y="1500" width="22" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_b_g2_b_checkout_di" bpmnElement="f_b_g2_b_checkout"><di:waypoint x="261" y="1478" /><di:waypoint x="304" y="1478" /><di:waypoint x="304" y="1600" /><di:waypoint x="276" y="1600" /><di:waypoint x="276" y="1609" /><bpmndi:BPMNLabel><dc:Bounds x="264" y="1480" width="22" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_b_subst_b_checkout_di" bpmnElement="f_b_subst_b_checkout"><di:waypoint x="240" y="1587" /><di:waypoint x="240" y="1609" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_b_checkout_b_g3_di" bpmnElement="f_b_checkout_b_g3"><di:waypoint x="240" y="1667" /><di:waypoint x="240" y="1697" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_b_g3_b_order_di" bpmnElement="f_b_g3_b_order"><di:waypoint x="240" y="1739" /><di:waypoint x="240" y="1769" /><bpmndi:BPMNLabel><dc:Bounds x="244" y="1740" width="22" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_b_g3_b_checkout_di" bpmnElement="f_b_g3_b_checkout"><di:waypoint x="219" y="1718" /><di:waypoint x="176" y="1718" /><di:waypoint x="176" y="1674" /><di:waypoint x="204" y="1674" /><di:waypoint x="204" y="1667" /><bpmndi:BPMNLabel><dc:Bounds x="194" y="1720" width="22" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_b_order_s_split_di" bpmnElement="f_b_order_s_split"><di:waypoint x="299" y="1798" /><di:waypoint x="520" y="1798" /><di:waypoint x="520" y="1857" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_s_split_s_stock_di" bpmnElement="f_s_split_s_stock"><di:waypoint x="520" y="1899" /><di:waypoint x="520" y="1929" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_s_split_s_custom_di" bpmnElement="f_s_split_s_custom"><di:waypoint x="541" y="1878" /><di:waypoint x="584" y="1878" /><di:waypoint x="584" y="2000" /><di:waypoint x="556" y="2000" /><di:waypoint x="556" y="2009" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_s_stock_s_join_di" bpmnElement="f_s_stock_s_join"><di:waypoint x="461" y="1958" /><di:waypoint x="456" y="1958" /><di:waypoint x="456" y="2118" /><di:waypoint x="499" y="2118" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_s_custom_s_join_di" bpmnElement="f_s_custom_s_join"><di:waypoint x="520" y="2067" /><di:waypoint x="520" y="2097" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_s_join_s_book_di" bpmnElement="f_s_join_s_book"><di:waypoint x="520" y="2139" /><di:waypoint x="520" y="2169" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_s_book_s_g5_di" bpmnElement="f_s_book_s_g5"><di:waypoint x="520" y="2227" /><di:waypoint x="520" y="2257" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_s_g5_s_install_di" bpmnElement="f_s_g5_s_install"><di:waypoint x="520" y="2299" /><di:waypoint x="520" y="2329" /><bpmndi:BPMNLabel><dc:Bounds x="524" y="2300" width="22" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_s_g5_s_track_di" bpmnElement="f_s_g5_s_track"><di:waypoint x="541" y="2278" /><di:waypoint x="584" y="2278" /><di:waypoint x="584" y="2400" /><di:waypoint x="556" y="2400" /><di:waypoint x="556" y="2409" /><bpmndi:BPMNLabel><dc:Bounds x="544" y="2280" width="22" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_s_install_s_track_di" bpmnElement="f_s_install_s_track"><di:waypoint x="520" y="2387" /><di:waypoint x="520" y="2409" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_t_late_s_replan_di" bpmnElement="f_t_late_s_replan"><di:waypoint x="565" y="2483" /><di:waypoint x="565" y="2489" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_s_replan_s_track_di" bpmnElement="f_s_replan_s_track"><di:waypoint x="461" y="2518" /><di:waypoint x="456" y="2518" /><di:waypoint x="456" y="2474" /><di:waypoint x="484" y="2474" /><di:waypoint x="484" y="2467" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_s_track_cs_survey_di" bpmnElement="f_s_track_cs_survey"><di:waypoint x="579" y="2438" /><di:waypoint x="660" y="2438" /><di:waypoint x="660" y="2569" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_cs_survey_cs_g6_di" bpmnElement="f_cs_survey_cs_g6"><di:waypoint x="660" y="2627" /><di:waypoint x="660" y="2657" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_cs_g6_cs_after_di" bpmnElement="f_cs_g6_cs_after"><di:waypoint x="660" y="2699" /><di:waypoint x="660" y="2729" /><bpmndi:BPMNLabel><dc:Bounds x="664" y="2700" width="22" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_cs_g6_cs_invite_di" bpmnElement="f_cs_g6_cs_invite"><di:waypoint x="681" y="2678" /><di:waypoint x="724" y="2678" /><di:waypoint x="724" y="2800" /><di:waypoint x="696" y="2800" /><di:waypoint x="696" y="2809" /><bpmndi:BPMNLabel><dc:Bounds x="684" y="2680" width="22" height="14" /></bpmndi:BPMNLabel></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_cs_after_cs_invite_di" bpmnElement="f_cs_after_cs_invite"><di:waypoint x="660" y="2787" /><di:waypoint x="660" y="2809" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="f_cs_invite_cs_end_di" bpmnElement="f_cs_invite_cs_end"><di:waypoint x="660" y="2867" /><di:waypoint x="660" y="2902" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="m_P_bazar_c_start_di" bpmnElement="m_P_bazar_c_start"><di:waypoint x="750" y="118" /><di:waypoint x="96" y="118" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="m_c_visit_b_start_di" bpmnElement="m_c_visit_b_start"><di:waypoint x="139" y="198" /><di:waypoint x="224" y="198" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="m_c_project_b_save_di" bpmnElement="m_c_project_b_save"><di:waypoint x="139" y="358" /><di:waypoint x="181" y="358" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="m_b_render_P_ai_di" bpmnElement="m_b_render_P_ai"><di:waypoint x="299" y="509" /><di:waypoint x="750" y="509" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="m_P_ai_b_render_di" bpmnElement="m_P_ai_b_render"><di:waypoint x="750" y="527" /><di:waypoint x="299" y="527" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="m_b_render_c_compare_di" bpmnElement="m_b_render_c_compare"><di:waypoint x="181" y="531" /><di:waypoint x="80" y="531" /><di:waypoint x="80" y="569" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="m_c_store_a_open_di" bpmnElement="m_c_store_a_open"><di:waypoint x="139" y="838" /><di:waypoint x="321" y="838" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="m_c_confirm_b_basket_di" bpmnElement="m_c_confirm_b_basket"><di:waypoint x="139" y="1318" /><di:waypoint x="224" y="1318" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="m_b_checkout_c_pay_di" bpmnElement="m_b_checkout_c_pay"><di:waypoint x="181" y="1630" /><di:waypoint x="139" y="1630" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="m_c_pay_b_checkout_di" bpmnElement="m_c_pay_b_checkout"><di:waypoint x="139" y="1646" /><di:waypoint x="181" y="1646" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="m_b_checkout_P_pay_di" bpmnElement="m_b_checkout_P_pay"><di:waypoint x="299" y="1629" /><di:waypoint x="750" y="1629" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="m_P_pay_b_checkout_di" bpmnElement="m_P_pay_b_checkout"><di:waypoint x="750" y="1647" /><di:waypoint x="299" y="1647" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="m_s_stock_P_supp_di" bpmnElement="m_s_stock_P_supp"><di:waypoint x="579" y="1958" /><di:waypoint x="750" y="1958" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="m_s_custom_P_manu_di" bpmnElement="m_s_custom_P_manu"><di:waypoint x="579" y="2029" /><di:waypoint x="750" y="2029" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="m_P_manu_s_custom_di" bpmnElement="m_P_manu_s_custom"><di:waypoint x="750" y="2047" /><di:waypoint x="579" y="2047" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="m_s_book_P_deliv_di" bpmnElement="m_s_book_P_deliv"><di:waypoint x="579" y="2189" /><di:waypoint x="750" y="2189" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="m_P_deliv_s_book_di" bpmnElement="m_P_deliv_s_book"><di:waypoint x="750" y="2207" /><di:waypoint x="579" y="2207" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="m_s_install_P_inst_di" bpmnElement="m_s_install_P_inst"><di:waypoint x="579" y="2358" /><di:waypoint x="750" y="2358" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="m_s_track_c_receive_di" bpmnElement="m_s_track_c_receive"><di:waypoint x="461" y="2438" /><di:waypoint x="139" y="2438" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="m_cs_survey_c_survey_di" bpmnElement="m_cs_survey_c_survey"><di:waypoint x="601" y="2590" /><di:waypoint x="139" y="2590" /></bpmndi:BPMNEdge>
+<bpmndi:BPMNEdge id="m_c_survey_cs_survey_di" bpmnElement="m_c_survey_cs_survey"><di:waypoint x="139" y="2606" /><di:waypoint x="601" y="2606" /></bpmndi:BPMNEdge>
+</bpmndi:BPMNPlane></bpmndi:BPMNDiagram></bpmn:definitions>
