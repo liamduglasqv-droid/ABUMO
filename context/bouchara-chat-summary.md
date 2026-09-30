@@ -195,3 +195,17 @@ Based on SKEMA Session 5: the canvas for the target operating model, the choice 
 - 7.2 WBS (Table 17, 7 work packages, 27 tasks); 7.3 dependencies and estimates (Table 18; critical path = product data; partners 1-4 weeks slack); 7.4 Gantt (Figure 2, landscape page); 7.5 budget €143,000 cash (Table 19; gates €5k / €72k / €66k; squad time ~€170k not cash; break-even ~104 extra orders a month); 7.6 product backlog MoSCoW (Table 20); 7.7 checkpoints and first rollout wave.
 - 6.3 now a flat squad; appendix population table renamed Table 21; 9.2 rewritten as bottom-up assumptions; exec summary budget/dates updated; 4.7 "~6 months"; refs [19]-[25] added.
 - Source files: deliverables/plan/ (plan.py schedule, gantt.py, section7_content.py).
+
+## 13. Whole-document compaction rewrite (30 Sep 2026)
+
+User feedback: meta-commentary was overused; the investor won't read 40 pages; cut launch-date minutiae and anything that doesn't support a pillar of the logic; keep persona, market size, service value and partners but brief; state assumptions where they matter.
+
+What changed in the Google Doc (text only; tables, figures, captions, section breaks untouched):
+- Prose cut from ~48,400 to ~22,800 characters; the PDF went from ~45+ to 37 pages (most remaining length is tables/figures).
+- Meta-commentary notes reduced to 7 across the whole document, one per key decision: problem validity (2.3), market-size robustness (4.4), rent vs own tech (5.3), 98% availability (6.1), flat organisation (6.3), three stores + control group (7.1), why the budget is this low (7.5). The main text reads on its own without them.
+- Executive summary rewritten to 4 paragraphs: situation, idea + moat, ask (€143k, 3 gates, pass criteria), and an explicit "most figures are estimates" caveat.
+- Removed: dates (kick-off/checkpoint dates), per-task duration reasoning, five "Why…?" blocks in 6.1, the canvas bullet list, 3.2 principles, the 6.5 bullet list, duplicated recommendations.
+- Fixed: stale cross-references (all now point to current numbering), 3.1 heading level, "6. Operating Model" now H1, heading sizes normalised (H1 16pt, H2 12pt), "Table 6" to "Figure 6", "Table 15" to "Figure 15".
+- Partner-review challenges were built into the text: fallback to two stores (never without control), staged funding with max ~€77k at risk before launch, rent-vs-build, flat vs functional/matrix.
+
+Source text for the rewrite: scratchpad rw/newtext.py (segment map by index at revision ANLCKQku…AoU).
