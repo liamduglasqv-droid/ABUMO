@@ -180,3 +180,10 @@ Based on SKEMA Session 5: the canvas for the target operating model, the choice 
   - checkpoint at month 3 (progress or fix) and at month 6 (start, progress or stop)
 - **5.6 Capability gaps:** Table 15 rates each capability on the 1–5 maturity scale, today (estimated) versus the pilot target, with the change needed in process, data, people or systems.
 - **Appendix population table:** now Table 16.
+
+## 11. Section 6 (Operating Model) rebuilt with BPMN, 30 Sep
+- The doc was renumbered by the user: 1 Executive summary, 2 Client and problem, 3 Mission, 4 Business Model (4.7 formula), 5 Value Model, 6 Operating Model, 7 Transformation (budget €190,200), 8 Recommendations, 9 Appendices, 10 References.
+- Section 6 rewritten in investor storytelling with hypophora ("Why ...? Because ..."): 6.1 canvas, Table 11 (7 steps), Figure 1a–c (BPMN, 3 parts), five design decisions (skip-the-planner path, render speed, 98% availability, lead times + paid installation, custom-spec check before payment); 6.2 Table 12 (9 supporting processes); 6.3 light matrix + Table 13 RACI (9 rows); 6.4 Table 14 KPIs K1–K16 (IDs match BPMN tags); 6.5 rhythm with two checkpoints; 6.6/6.7 kept (styles fixed), Table 15 +2 rows (pilot-range availability 2→4, installation service 1→3).
+- New references [15] Deloitte/Google 2020, [16] Nielsen NN/g, [17] Gruen & Corsten 2008, [18] DispatchTrack 2022 (vendor survey, labelled).
+- BPMN source and PNGs: deliverables/bpmn/ (bouchara_main_process.bpmn opens in bpmn.io / Camunda Modeler; generate_bpmn.py + render.js rebuild it).
+- Open fixes flagged to the user: Section 7 budget undercosts people (€8k/month vs ~€14.5k), break-even should be in extra orders, 4.7 says ~12 months vs 6-month review, 7.4 cites Section 2.3 (now 3.3), heading levels in Sections 7–8.
